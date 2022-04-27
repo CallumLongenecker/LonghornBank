@@ -17,7 +17,7 @@ void Account::deposit(double amt)
     this->balance += amt;
     this->numDeposits++;
 }
-void Account::withdraw(double amt)
+bool Account::withdraw(double amt)
 {
     /*
         A virtual function that accepts an argument for the amount of the withdrawal.
@@ -26,6 +26,7 @@ void Account::withdraw(double amt)
     */
     this->balance -= amt;
     this->numWithdrawals++;
+    return true;
 }
 void Account::calcInt()
 {
@@ -36,32 +37,31 @@ void Account::calcInt()
 }
 void Account::monthlyProc()
 {
-    this->balance -= monthlyServiceCharges;
+    this->balance -= numMonthlyServiceCharges;
     this->calcInt();
     this->numWithdrawals = 0;
     this->numDeposits = 0;
-    this->monthlyServiceCharges = 0;
+    this->numMonthlyServiceCharges = 0;
 }
 
 // Savings Account Implementation:
 
 // savings constructor
-SavingsAccount::SavingsAccount(double initBalance, double initAnnualInterest)
-    : Account(initBalance, initAnnualInterest)
+Savings::Savings(double initBalance, double initAnnualInterest)
 {
     // SavingsAccount constructor that accepts arguments for the balance and annual interest rate.
     this->numWithdrawals = 0;
     this->numDeposits = 0;
-    this->monthlyServiceCharges = 0;
+    this->numMonthlyServiceCharges = 0;
 
     // check if account is active by checking if balance is above 25
     if (this->balance > 25)
     {
-        this->active = true;
+        this->status = true;
     }
     else
     {
-        this->active = false;
+        this->status = false;
         // account is not active, print message
         std::cout << "Account is not active. Balance must be greater than $25 to use account." << std::endl;
     }
@@ -75,27 +75,29 @@ void Savings::deposit(double amt)
     // check if deposit makes account active
     if (this->balance > 25)
     {
-        this->active = true;
+        this->status = true;
     }
 }
 
-void Savings::withdraw(double amt)
+bool Savings::withdraw(double amt)
 {
     if (this->status == true)
     {
         // call the base class withdraw function
         Account::withdraw(amt);
+        return true;
     }
     else
     {
         cout << "Account is inactive. No withdrawal allowed." << endl;
+        return false;
     }
 }
 void Savings::monthlyProc()
 {
     if (this->numWithdrawals > 4)
     {
-        this->monthlyServiceCharges += (this->numWithdrawals - 4) * 1;
+        this->numMonthlyServiceCharges += (this->numWithdrawals - 4) * 1;
     }
 
     if (this->balance < 25)
@@ -108,7 +110,13 @@ void Savings::monthlyProc()
 
 // Checking Account Implementation:
 
-void Checking::withdraw(double amt)
+// checking constructor
+Checking::Checking(double initBalance, double initAnnualInterest)
+{
+    Account::Account(initBalance, initAnnualInterest);
+}
+
+bool Checking::withdraw(double amt)
 {
     /*
     Before the base class function is called, this function will determine if a
@@ -120,12 +128,13 @@ will become negative and the customer will owe the negative amount to the bank.
     */
     if (this->balance - amt < 0)
     {
-        this->monthlyServiceCharges += 15;
+        this->numMonthlyServiceCharges += 15;
         std::cout << "Account is overdrawn. Service charge of $15 will be taken from account." << std::endl;
-        if(this->balance - 15 < 0){
+
+        if (this->balance - 15 < 0)
+        {
             // tell user they owe money to bank
             std::cout << "You owe $" << this->balance - 15 << " to the bank." << std::endl;
-            
         }
         this->balance -= 15;
     }
@@ -137,6 +146,6 @@ will become negative and the customer will owe the negative amount to the bank.
 
 void Checking::monthlyProc()
 {
-    this->monthlyServiceCharges += 5 + 0.1 * this->numWithdrawals;
+    this->numMonthlyServiceCharges += 5 + 0.1 * this->numWithdrawals;
     this->Account::monthlyProc();
 }

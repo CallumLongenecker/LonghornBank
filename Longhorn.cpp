@@ -11,7 +11,7 @@ string *doDepositsAndWithdrawals(Account *account)
     cout << "Please input the number of deposits and withdrawals: " << endl;
     int numDepositsAndWithdrawals;
     cin >> numDepositsAndWithdrawals;
-
+    string *result = new string[numDepositsAndWithdrawals];
     // get the deposits and withdrawals
     for (int i = 0; i < numDepositsAndWithdrawals; i++)
     {
@@ -39,7 +39,8 @@ string *doDepositsAndWithdrawals(Account *account)
         }
         else
         {
-            cout << "Invalid input. Please try again." << endl;
+            cout << "Invalid operation. Please try again." << endl;
+            i--;
         }
     }
 }
@@ -65,11 +66,11 @@ Account *getInput()
     Account *account;
     if (accountType == 'C')
     {
-        account = new CheckingAccount(initBal, initInterestRate, numDepositsAndWithdrawals);
+        account = new Checking(initBal, initInterestRate);
     }
     else if (accountType == 'S')
     {
-        account = new SavingsAccount(initBal, initInterestRate, numDepositsAndWithdrawals);
+        account = new Savings(initBal, initInterestRate);
     }
     else
     {
