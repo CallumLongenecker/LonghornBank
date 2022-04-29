@@ -11,8 +11,8 @@
 
 #include <iostream>
 #include <string>
-#include "Account.h"
-
+#include "Savings.h"
+#include "Checking.h"
 using namespace std;
 
 int num_transactions = 0;
@@ -45,11 +45,11 @@ string *doDepositsAndWithdrawals(Account *account, int numDepositsAndWithdrawals
             // if the withdrawal is successful then the result will be "Withdrawal: " + amount
             if (account->withdraw(amount))
             {
-                result[i] = "Withdrawal of " + to_string(amount) + " made.";
+                result[i] = "Withdrawal of $" + to_string(amount) + " made.";
             }
             else
             {
-                result[i] = "Withdrawal of " + to_string(amount) + " failed.";
+                result[i] = "Withdrawal of $" + to_string(amount) + " failed. Service Charge of $15 charged to the account.";
             }
         }
         else
@@ -135,25 +135,21 @@ void printCow()
 }
 
 void printLogo()
-{   
-    //print ascii longhorn logo, credit to https://ascii.co.uk/art/longhorn
+{
+    // print ascii longhorn logo, credit to https://ascii.co.uk/art/longhorn
 
-    cout << "        888                        888"<< endl;
-    cout << "        888                        888"<< endl;
-    cout << "        888                        888"<< endl;
-    cout << "        888 .d88b. 88888b.  .d88b. 88888b.  .d88b. 888d88888888b."<< endl;
-    cout << "        888d88\"\"88b888 \"88bd88P\"88b888 \"88bd88\"\"88b888P\"  888 \"88b"<< endl;
-    cout << "        888888  888888  888888  888888  888888  888888    888  888"<< endl;
-    cout << "        888Y88..88P888  888Y88b 888888  888Y88..88P888    888  888"<< endl;
-    cout << "        888 \"Y88P\" 888  888 \"Y88888888  888 \"Y88P\" 888    888  888 "<< endl;
-    cout << "                                   888"<< endl;
-    cout << "                              Y8b d88P"<< endl;
-    cout << "                              \"Y88P\""<< endl;
+    cout << "        888                        888" << endl;
+    cout << "        888                        888" << endl;
+    cout << "        888                        888" << endl;
+    cout << "        888 .d88b. 88888b.  .d88b. 88888b.  .d88b. 888d88888888b." << endl;
+    cout << "        888d88\"\"88b888 \"88bd88P\"88b888 \"88bd88\"\"88b888P\"  888 \"88b" << endl;
+    cout << "        888888  888888  888888  888888  888888  888888    888  888" << endl;
+    cout << "        888Y88..88P888  888Y88b 888888  888Y88..88P888    888  888" << endl;
+    cout << "        888 \"Y88P\" 888  888 \"Y88888888  888 \"Y88P\" 888    888  888 " << endl;
+    cout << "                                   888" << endl;
+    cout << "                              Y8b d88P" << endl;
+    cout << "                              \"Y88P\"" << endl;
     cout << endl;
-
-
-
-
 }
 
 void printOutput(string *transaction_log, int num_transactions, double beginning_balance, double amount_deposits, double amount_withdrawals, double interest, double service_charges, double ending_balance)
