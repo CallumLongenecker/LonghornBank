@@ -1,4 +1,4 @@
-// File Name: Account.cpp
+// File Name: Account_crl3235_asv724_nd8775.cpp
 //
 // Authors: Callum Longenecker, Anand Valavalkar, Neal Davar
 // Date: 4/29/2022
@@ -64,8 +64,10 @@ bool Account::withdraw(double amt)
 void Account::calcInt()
 {
 
-    double monthlyInterestRate = annualInterest / 100 / 12; // double to store the monthly interest rate
-    this->monthlyInterestEarned = this->balance * monthlyInterestRate; // calculate the monthly interest earned
+    // calculate the monthly interest earned
+    double monthlyInterestRate = annualInterest / 100 / 12; 
+    // calculate the monthly interest earned
+    this->monthlyInterestEarned = this->balance * monthlyInterestRate; 
     this->balance += this->monthlyInterestEarned;
 }
 

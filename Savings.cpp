@@ -1,4 +1,4 @@
-// File Name: Savings.cpp
+// File Name: Savings_crl3235_asv724_nd8775.cpp
 //
 // Authors: Callum Longenecker, Anand Valavalkar, Neal Davar
 // Date: 4/29/2022
@@ -12,12 +12,12 @@
 #include "Savings.h"
 // Savings Account Implementation:
 
-//*******************************************************************************************
+//*************************************************************************
 // Savings: the constructor for the Savings class
 // initBalance: the initial balance of the account
 // initAnnualInterest: the initial annual interest rate of the account
 // returns: nothing
-//*******************************************************************************************
+//*************************************************************************
 Savings::Savings(double initBalance, double initAnnualInterest) 
     : Account(initBalance, initAnnualInterest)
     {

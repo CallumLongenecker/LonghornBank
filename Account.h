@@ -1,4 +1,4 @@
-// File Name: Account.h
+// File Name: Account_crl3235_asv724_nd8775.h
 //
 // Authors: Callum Longenecker, Anand Valavalkar, Neal Davar
 // Date: 4/29/2022
@@ -15,14 +15,22 @@ using namespace std;
 class Account
 {
 public:
-    double balance;               // double to store the balance for this account
-    int numDeposits;              // stores the number of deposits this month for this account
-    int numWithdrawals;           // stores the number of withdrawals this month for this account
-    double amountDeposited;  // stores the amount deposited this month for this account 
-    double amountWithdrawn;      // stores the amount of money withdrawn this month for this account
-    double annualInterest;        // stores the annual interest rate for this account
-    double monthlyInterestEarned; // stores the monthly interest earned for this account
-    int amountServiceCharges; // stores the monthly service charges for this account
+    // double to store the balance of the account
+    double balance;               
+    // number of deposits this month
+    int numDeposits;
+    // number of withdrawals this month 
+    int numWithdrawals;           
+    // stores the amount deposited this month for this account 
+    double amountDeposited;  
+    // stores the amount of money withdrawn this month for this account
+    double amountWithdrawn;      
+    // stores the annual interest rate for this account
+    double annualInterest;        
+    // stores the monthly interest earned for this account
+    double monthlyInterestEarned; 
+    // stores the monthly service charges for this account
+    int amountServiceCharges; 
 
     //***********************************************************
     // Account: the constructor for the Account class

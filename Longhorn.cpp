@@ -1,4 +1,4 @@
-// File Name: Longhorn.cpp
+// File Name: Longhorn_crl3235_asv724_nd8775.cpp
 //
 // Authors: Callum Longenecker, Anand Valavalkar, Neal Davar
 // Date: 4/29/2022
@@ -297,7 +297,8 @@ int main(int argc, char const *argv[])
     account->monthlyProc();
     printOutput(transactionLog, numDepositsAndWithdrawals, startingBalance,
                 account->amountDeposited, account->amountWithdrawn,
-                account->monthlyInterestEarned, account->amountServiceCharges,
+                account->monthlyInterestEarned, 
+                account->amountServiceCharges,
                 account->balance);
     delete account;
     delete[] transactionLog;
