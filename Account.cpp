@@ -6,18 +6,27 @@
 // CS 105C Spring 2022
 // Instructor: Dr. Palacios
 //
-// This cpp file contains the method implementations for the Account class,
-// the Savings class, and the Checking class
+// This cpp file contains the method implementations for the Account class
 
 #include "Account.h"
 #include <iostream>
 
-
+//***********************************************************
+// Account: the constructor for the Account class
+// initBalance: the initial balance of the account
+// initAnnualInterest: the initial annual interest rate of the account
+// returns: nothing
+//***********************************************************
 Account::Account(double initBalance, double initAnnualInterest)
     {
-        // Constructor that accepts arguments for the balance and annual interest rate.
         this->balance = initBalance;
         this->annualInterest = initAnnualInterest;
+        this->numWithdrawals = 0;
+        this->numDeposits = 0;
+        this->amountDeposited = 0;
+        this->amountWithdrawn = 0;
+        this->monthlyInterestEarned = 0;
+        this->amountServiceCharges = 0;
     }
 
 //***********************************************************
@@ -29,6 +38,7 @@ Account::Account(double initBalance, double initAnnualInterest)
 void Account::deposit(double amt)
 {
     this->balance += amt;
+    this->amountDeposited += amt;
     this->numDeposits++;
 }
 
@@ -41,6 +51,7 @@ void Account::deposit(double amt)
 bool Account::withdraw(double amt)
 {
     this->balance -= amt;
+    this->amountWithdrawn += amt;
     this->numWithdrawals++;
     return true;
 }
@@ -53,9 +64,9 @@ bool Account::withdraw(double amt)
 void Account::calcInt()
 {
 
-    double monthlyInterestRate = annualInterest / 12;
-    double monthlyInterest = this->balance * monthlyInterestRate;
-    this->balance += monthlyInterest;
+    double monthlyInterestRate = annualInterest / 100 / 12; // double to store the monthly interest rate
+    this->monthlyInterestEarned = this->balance * monthlyInterestRate; // calculate the monthly interest earned
+    this->balance += this->monthlyInterestEarned;
 }
 
 //***********************************************************
@@ -65,10 +76,9 @@ void Account::calcInt()
 //***********************************************************
 void Account::monthlyProc()
 {
-    this->balance -= numMonthlyServiceCharges;
     this->calcInt();
-    this->numWithdrawals = 0;
-    this->numDeposits = 0;
-    this->numMonthlyServiceCharges = 0;
+    this->balance -= amountServiceCharges;
+    
+
 }
 

@@ -1,12 +1,31 @@
+// File Name: Savings.cpp
+//
+// Authors: Callum Longenecker, Anand Valavalkar, Neal Davar
+// Date: 4/29/2022
+// Assignment Number 4
+// CS 105C Spring 2022
+// Instructor: Dr. Palacios
+//
+// This cpp file contains the method implementations for the Savings class
+
+
 #include "Savings.h"
 // Savings Account Implementation:
 
-Savings::Savings(double initBalance, double initAnnualInterest) : Account(initBalance, initAnnualInterest)
+//*******************************************************************************************
+// Savings: the constructor for the Savings class
+// initBalance: the initial balance of the account
+// initAnnualInterest: the initial annual interest rate of the account
+// returns: nothing
+//*******************************************************************************************
+Savings::Savings(double initBalance, double initAnnualInterest) 
+    : Account(initBalance, initAnnualInterest)
     {
-        // SavingsAccount constructor that accepts arguments for the balance and annual interest rate.
+        // SavingsAccount constructor that accepts arguments
+        // for the balance and annual interest rate.
         this->numWithdrawals = 0;
         this->numDeposits = 0;
-        this->numMonthlyServiceCharges = 0;
+        this->amountServiceCharges = 0;
 
         // check if account is active by checking if balance is above 25
         if (this->balance > 25)
@@ -17,7 +36,8 @@ Savings::Savings(double initBalance, double initAnnualInterest) : Account(initBa
         {
             this->status = false;
             // account is not active, print message
-            cout << "Account is not active. Balance must be greater than $25 to use account." << endl;
+            cout << "Account is not active. Balance must be greater " 
+                << "than $25 to use account." << endl;
         }
     }
 
@@ -30,6 +50,7 @@ Savings::Savings(double initBalance, double initAnnualInterest) : Account(initBa
 void Savings::deposit(double amt)
 {
     this->balance += amt;
+    this->amountDeposited += amt;
     this->numDeposits++;
 
     // check if deposit makes account active
@@ -70,13 +91,18 @@ void Savings::monthlyProc()
 {
     if (this->numWithdrawals > 4)
     {
-        this->numMonthlyServiceCharges += (this->numWithdrawals - 4) * 1;
+        this->amountServiceCharges += (this->numWithdrawals - 4) * 1;
     }
 
+
+    this->calcInt();
+
+    this->balance -= amountServiceCharges;
     if (this->balance < 25)
     {
+        cout << "Account is inactive as a result of the monthly" 
+            << " service charges being taken from the account.\n";
         this->status = false;
     }
-
-    this->Account::monthlyProc();
+    
 }

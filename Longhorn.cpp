@@ -10,25 +10,35 @@
 // with the program.
 
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include "Savings.h"
 #include "Checking.h"
 using namespace std;
 
-int num_transactions = 0;
-
-string *doDepositsAndWithdrawals(Account *account, int numDepositsAndWithdrawals)
+//***********************************************************
+// doDepositsAndWithdrawals: method that handles the user
+// deposits and withdrawals from the accounts
+// account: the account to deposit and withdraw from
+// numDepositsAndWithdrawals: the number of deposits and
+// withdrawals to perform
+// returns: a string pointer storing all the transactions
+//***********************************************************
+string *doDepositsAndWithdrawals(Account *account, 
+    int numDepositsAndWithdrawals)
 {
     string *result = new string[numDepositsAndWithdrawals];
     // get the deposits and withdrawals
     for (int i = 0; i < numDepositsAndWithdrawals; i++)
     {
         // ask the use if they want to make a deposit or withdrawal
-        cout << "Would you like to make a deposit or withdrawal? (D = Deposit, W = Withdrawal): " << endl;
-        char depositOrWithdrawal;
+        cout << "Would you like to make a deposit or withdrawal?" 
+            << " (D = Deposit, W = Withdrawal): " << endl;
+        char depositOrWithdrawal; // stores the user's choice
         cin >> depositOrWithdrawal;
         // ask the user for the amount of the deposit or withdrawal
-        cout << "Please input the amount of the deposit or withdrawal: " << endl;
+        cout << "Please input the amount of the deposit or withdrawal: "
+            << endl;
         double amount;
         cin >> amount;
 
@@ -42,14 +52,16 @@ string *doDepositsAndWithdrawals(Account *account, int numDepositsAndWithdrawals
         else if (depositOrWithdrawal == 'W')
         {
             // make a withdrawal
-            // if the withdrawal is successful then the result will be "Withdrawal: " + amount
             if (account->withdraw(amount))
             {
-                result[i] = "Withdrawal of $" + to_string(amount) + " made.";
+                result[i] = "Withdrawal of $" + to_string(amount) 
+                    + " made.";
             }
             else
             {
-                result[i] = "Withdrawal of $" + to_string(amount) + " failed. Service Charge of $15 charged to the account.";
+                result[i] = "Withdrawal of $" + to_string(amount) 
+                    + " failed." 
+                    + " Service Charge of $15 charged to the account.";
             }
         }
         else
@@ -62,25 +74,23 @@ string *doDepositsAndWithdrawals(Account *account, int numDepositsAndWithdrawals
     return result;
 }
 
+//***********************************************************
+// getInput: method that gets the account setup information
+// returns: an account pointer to the account that was created
+//***********************************************************
 Account *getInput()
 {
-    /*
-    the input must include (per your chosen format):
-    • The type of account (savings or checking).
-• The month's beginning balance and the annual interest rate.
-• The number of deposits and withdrawals (may this data be omitted?).
-• The amounts of the deposits and withdrawals made during the month.
-    */
-
-    cout << "Please choose your account type (C = Checking, S = Savings): " << endl;
+    cout << "Please choose your account type (C = Checking, S = Savings): ";
     char accountType;
-    cin >> accountType;
-    cout << "Please input your account's beginning balance and the annual interest rate: " << endl;
     double initBal, initInterestRate;
-    cin >> initBal >> initInterestRate;
+    cin >> accountType;
+    cout << endl;
+    cout << "Please input your account's beginning balance: ";
+    cin >> initBal;
+    cout << "Please input your account's annual interest rate percentage: ";
+    cin >> initInterestRate;
 
-    // create the account based on user decision
-    Account *account;
+    Account *account; // the account to return
     if (accountType == 'C')
     {
         account = new Checking(initBal, initInterestRate);
@@ -96,6 +106,10 @@ Account *getInput()
     return account;
 }
 
+//***********************************************************
+// printIntro: method that prints the program's introduction
+// returns: nothing
+//***********************************************************
 void printIntro()
 {
     // print ascii art, credit to https://textart.io/art/tag/bank/1
@@ -107,7 +121,8 @@ void printIntro()
     cout << "        | \"\"\" |  \"\"\"    \"\"\"    \"\"\"  | \"\"\" |\n";
     cout << "   ())  |[-|-]| [-|-]  [-|-]  [-|-] |[-|-]|  ())\n";
     cout << "  (())) |     |---------------------|     | (()))\n";
-    cout << " (())())| \"\"\" |  \"\"\"    \"\"\"    \"\"\"  | \"\"\" |(())())\n";
+    cout << " (())())| \"\"\" |  \"\"\"   " 
+        << " \"\"\"    \"\"\"  | \"\"\" |(())())\n";
     cout << " (()))()|[-|-]|  :::   .\"-.   :::  |[-|-]|(()))())\n";
     cout << " ()))(()|     | |~|~|  |_|_|  |~|~| |     |()))(()\n";
     cout << "    ||  |_____|_|_|_|__|_|_|__|_|_|_|_____|  ||\n";
@@ -116,88 +131,175 @@ void printIntro()
     cout << endl;
 
     cout << "Welcome to the Bank of Longhorn!" << endl;
+    cout << endl;
     cout << "Please input your account information: " << endl;
 }
 
+//***********************************************************
+// printCow: method that prints a cow
+// returns: nothing
+//***********************************************************
 void printCow()
 {
-    // print ascii art cow, credit to https://www.angelfire.com/oh/cow123/ascii.html
+    // print ascii art cow, credit to 
+    //https://www.angelfire.com/oh/cow123/ascii.html
 
-    cout << "                   ____                                         ____\n";
-    cout << "                      /                                         \n";
-    cout << "                      (__________________________________________)\n";
+    cout << "                   " 
+        << "____                                         ____\n";
+    cout << "                      " 
+        << "/                                         \n";
+    cout << "                      " 
+        << "(__________________________________________)\n";
     cout << "                                          (oo)\n";
     cout << "                                   /-------\\/          \n";
     cout << "                                  / |     ||          \n";
     cout << "                                 *  ||----||            \n";
-    cout << "                                    ~~    ~~                 \n";
+    cout << "                                   " 
+        << " ~~    ~~                 \n";
     cout << endl;
 }
 
+//***********************************************************
+// printLogo: method that prints the bank's logo
+// returns: nothing
+//***********************************************************
 void printLogo()
 {
-    // print ascii longhorn logo, credit to https://ascii.co.uk/art/longhorn
+    // print ascii longhorn logo, credit to 
+    // https://ascii.co.uk/art/longhorn
 
     cout << "        888                        888" << endl;
     cout << "        888                        888" << endl;
     cout << "        888                        888" << endl;
-    cout << "        888 .d88b. 88888b.  .d88b. 88888b.  .d88b. 888d88888888b." << endl;
-    cout << "        888d88\"\"88b888 \"88bd88P\"88b888 \"88bd88\"\"88b888P\"  888 \"88b" << endl;
-    cout << "        888888  888888  888888  888888  888888  888888    888  888" << endl;
-    cout << "        888Y88..88P888  888Y88b 888888  888Y88..88P888    888  888" << endl;
-    cout << "        888 \"Y88P\" 888  888 \"Y88888888  888 \"Y88P\" 888    888  888 " << endl;
+    cout << "        888 .d88b. 88888b.  .d88b. 88888b. " 
+        << " .d88b. 888d88888888b." << endl;
+    cout << "        888d88\"\"88b888 \"88bd88P\"88b888 " 
+        << "\"88bd88\"\"88b888P\"  888 \"88b" << endl;
+    cout << "        888888  888888  888888  888888 "
+        << " 888888  888888    888  888" << endl;
+    cout << "        888Y88..88P888  888Y88b 888888 " 
+        << " 888Y88..88P888    888  888" << endl;
+    cout << "        888 \"Y88P\" 888  888 \"Y88888888 " 
+        << " 888 \"Y88P\" 888    888  888 " << endl;
     cout << "                                   888" << endl;
     cout << "                              Y8b d88P" << endl;
     cout << "                              \"Y88P\"" << endl;
     cout << endl;
 }
 
-void printOutput(string *transaction_log, int num_transactions, double beginning_balance, double amount_deposits, double amount_withdrawals, double interest, double service_charges, double ending_balance)
+//***********************************************************
+// getLongest: method that finds the longest integer
+// length in an array
+// nums: an array of integers
+// numsSize: the size of the array
+// returns: the length of the longest integer in the array
+//***********************************************************
+int getLongest(int *nums, int numsSize)
 {
-    // Prints the contents of the transaction log
-    cout << "Transaction Log: " << endl;
-    for (int i = 0; i < num_transactions; i++)
+    int longest = 0; // initialize the longest integer to 0
+    for (int i = 0; i < numsSize; i++)
     {
-        cout << transaction_log[i] << endl;
+        // get the number of characters in the int
+        int numOfChars = to_string(nums[i]).length(); 
+        if (numOfChars > longest)
+        {
+            longest = numOfChars;
+        }
     }
-
-    // print the remaining end of month statistics
-    cout << "_._.__._.__._.__._.__._.__._.__._.__._.__._.__._._" << endl;
-    cout << "| Monthly Starting Balance: " << beginning_balance << endl;
-    cout << "-.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.-" << endl;
-    cout << "_._.__._.__._.__._.__._.__._.__._.__._.__._.__._._" << endl;
-    cout << "| Amount Deposited:         " << amount_deposits << endl;
-    cout << "-.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.-" << endl;
-    cout << "_._.__._.__._.__._.__._.__._.__._.__._.__._.__._._" << endl;
-    cout << "| Amount Withdrawn:         " << amount_withdrawals << endl;
-    cout << "-.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.-" << endl;
-    cout << "_._.__._.__._.__._.__._.__._.__._.__._.__._.__._._" << endl;
-    cout << "| Interest Earned:          " << interest << endl;
-    cout << "-.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.-" << endl;
-    cout << "_._.__._.__._.__._.__._.__._.__._.__._.__._.__._._" << endl;
-    cout << "| Service Charges:          " << service_charges << endl;
-    cout << "-.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.-" << endl;
-    cout << "_._.__._.__._.__._.__._.__._.__._.__._.__._.__._._" << endl;
-    cout << "| Monthly Ending Balance:   " << ending_balance << endl;
-    cout << "-.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.-" << endl;
+    return longest;
 }
 
+//***********************************************************
+// printOutput: method that prints the output of the program
+// transactionLog: an array of transaction strings
+// numTransactions: the size of the array
+// beginningBalance: the beginning balance of the account
+// numDeposits: the number of deposits made
+// numWithdrawals: the number of withdrawals made
+// monthlyInterestEarned: earned interest this month
+// serviceCharges: service charges amount
+// endingBalance: the ending balance of the account
+// returns: nothing
+//***********************************************************
+void printOutput(string *transactionLog, int numTransactions, 
+    double beginningBalance, double numDeposits, double numWithdrawals, 
+    double monthlyInterestEarned, double serviceCharges,
+    double endingBalance)
+{
+
+    // Prints the contents of the transaction log
+
+    cout << "Transaction Log: " << endl;
+
+    // if there are no transactions, tell the user
+    if (numTransactions == 0)
+    {
+        cout << "No transactions were made this this month." << endl;
+    }
+    else
+    {
+        // print the contents of the transaction log
+        // with a transaction number
+        for (int i = 0; i < numTransactions; i++)
+        {
+            cout << "Transaction " << i + 1 << ": " 
+                << transactionLog[i] << endl;
+        }
+    }
+    cout << endl;
+
+
+
+    cout << "_._.__._.__._.__._.__._.__._.__._.__._.__._.__._._" << endl;
+    cout << "| Monthly Starting Balance: " << beginningBalance << endl;
+    cout << "-.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.-" << endl;
+    cout << endl;
+    cout << "_._.__._.__._.__._.__._.__._.__._.__._.__._.__._._" << endl;
+    cout << "| Amount Deposited:         " << numDeposits << endl;
+    cout << "-.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.-" << endl;
+    cout << endl;
+    cout << "_._.__._.__._.__._.__._.__._.__._.__._.__._.__._._" << endl;
+    cout << "| Amount Withdrawn:         " << numWithdrawals << endl;
+    cout << "-.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.-" << endl;
+    cout << endl;
+    cout << "_._.__._.__._.__._.__._.__._.__._.__._.__._.__._._" << endl;
+    cout << "| Interest Earned:          " << monthlyInterestEarned << endl;
+    cout << "-.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.-" << endl;
+    cout << endl;
+    cout << "_._.__._.__._.__._.__._.__._.__._.__._.__._.__._._" << endl;
+    cout << "| Service Charges:          " << serviceCharges << endl;
+    cout << "-.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.-" << endl;
+    cout << endl;
+    cout << "_._.__._.__._.__._.__._.__._.__._.__._.__._.__._._" << endl;
+    cout << "| Monthly Ending Balance:   " << endingBalance << endl;
+    cout << "-.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.-" << endl;
+    cout << endl;
+}
+
+//***********************************************************
+// main: method that runs the program
+// argc: the number of command line arguments
+// argv: the command line arguments
+// returns: 0
+//***********************************************************
 int main(int argc, char const *argv[])
 {
     printIntro();
     Account *account = getInput();
-    cout << "Please input the number of deposits and withdrawals: " << endl;
-    int numDepositsAndWithdrawals;
+    int startingBalance = account->balance;
+    cout << "Please input the number of deposits and withdrawals: ";
+    int numDepositsAndWithdrawals; //
     cin >> numDepositsAndWithdrawals;
+    cout << endl;
     // do transactions
-    string *transaction_log = doDepositsAndWithdrawals(account, numDepositsAndWithdrawals);
-    // print the end of month statistics
-    double beginning_balance = account->balance;
-    double amount_deposits = account->numDeposits;
-    double amount_withdrawals = account->numWithdrawals;
-    double interest = account->annualInterest;
-    double service_charges = account->numMonthlyServiceCharges;
-    double ending_balance = account->balance;
-    printOutput(transaction_log, numDepositsAndWithdrawals, beginning_balance, amount_deposits, amount_withdrawals, interest, service_charges, ending_balance);
+    string *transactionLog = 
+        doDepositsAndWithdrawals(account, numDepositsAndWithdrawals);
+    account->monthlyProc();
+    printOutput(transactionLog, numDepositsAndWithdrawals, startingBalance,
+                account->amountDeposited, account->amountWithdrawn,
+                account->monthlyInterestEarned, account->amountServiceCharges,
+                account->balance);
+    delete account;
+    delete[] transactionLog;
     return 0;
 }
