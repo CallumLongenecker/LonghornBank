@@ -43,10 +43,11 @@ bool Checking::withdraw(double amt)
         if (this->balance - 15 < 0)
         {
             // tell user they owe money to bank
-            cout << "You owe $" << this->balance - 15 
+            cout << "You owe $" << 15 - this->balance 
                 << " to the bank." << endl;
         }
         this->balance -= 15;
+        cout << endl;
         return false;
     }
 

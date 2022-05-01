@@ -38,6 +38,7 @@ Savings::Savings(double initBalance, double initAnnualInterest)
             // account is not active, print message
             cout << "Account is not active. Balance must be greater " 
                 << "than $25 to use account." << endl;
+            cout << endl;
         }
     }
 
@@ -49,6 +50,9 @@ Savings::Savings(double initBalance, double initAnnualInterest)
 //***********************************************************
 void Savings::deposit(double amt)
 {
+   //check current status of account
+   bool currStatus = this->status;
+
     this->balance += amt;
     this->amountDeposited += amt;
     this->numDeposits++;
@@ -57,6 +61,10 @@ void Savings::deposit(double amt)
     if (this->balance > 25)
     {
         this->status = true;
+        if(currStatus == false) {
+           cout << "Account is now active. Thank you for your deposit!" 
+            << endl;
+        }
     }
     
 }
@@ -69,6 +77,9 @@ void Savings::deposit(double amt)
 //***********************************************************
 bool Savings::withdraw(double amt)
 {
+   if(this->balance - amt < 25){
+      this->status = false;
+   }
     if (this->status == true)
     {
         // call the base class withdraw function
@@ -78,6 +89,7 @@ bool Savings::withdraw(double amt)
     else
     {
         cout << "Account is inactive. No withdrawal allowed." << endl;
+        cout << endl;
         return false;
     }
 }
@@ -97,11 +109,14 @@ void Savings::monthlyProc()
 
     this->calcInt();
 
+    bool activePreCharges = this->status;
+
     this->balance -= amountServiceCharges;
-    if (this->balance < 25)
-    {
+    if (this->balance < 25 && activePreCharges)
+    { 
         cout << "Account is inactive as a result of the monthly" 
             << " service charges being taken from the account.\n";
+         cout << endl;
         this->status = false;
     }
     

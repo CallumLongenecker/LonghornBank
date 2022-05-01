@@ -12,9 +12,27 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <sstream>
 #include "Savings.h"
 #include "Checking.h"
 using namespace std;
+
+
+//***********************************************************
+// dollar: method to append a dollar sign in front of double 
+// and return resulting string
+// num: double to append dollar sign to
+// returns: string with dollar sign in front of num
+//***********************************************************
+string dollar(double num)
+{
+   stringstream ss;
+   ss << fixed << setprecision(2) << num;
+   string numString = ss.str();
+   // append dollar sign
+   numString.insert(0, "$");
+   return numString;
+}
 
 //***********************************************************
 // doDepositsAndWithdrawals: method that handles the user
@@ -31,22 +49,33 @@ string *doDepositsAndWithdrawals(Account *account,
     // get the deposits and withdrawals
     for (int i = 0; i < numDepositsAndWithdrawals; i++)
     {
-        // ask the use if they want to make a deposit or withdrawal
-        cout << "Would you like to make a deposit or withdrawal?" 
-            << " (D = Deposit, W = Withdrawal): " << endl;
-        char depositOrWithdrawal; // stores the user's choice
-        cin >> depositOrWithdrawal;
+        // ask the user if they want to make a deposit or withdrawal
+         cout << "Would you like to make a deposit or withdrawal?" 
+            << " (D = Deposit, W = Withdrawal): ";
+         char depositOrWithdrawal = 'a';
+         // make sure user only inputs D or W
+         while(depositOrWithdrawal != 'D' && depositOrWithdrawal != 'W')
+         {
+            cin >> depositOrWithdrawal;
+
+            depositOrWithdrawal = toupper(depositOrWithdrawal);
+            if (depositOrWithdrawal != 'D' && depositOrWithdrawal != 'W')
+            {
+                cout << "Invalid input. Please try again: ";
+            }
+         }
+
         // ask the user for the amount of the deposit or withdrawal
-        cout << "Please input the amount of the deposit or withdrawal: "
-            << endl;
+        cout << "Please input the amount of the deposit or withdrawal: $";
         double amount;
         cin >> amount;
+        cout << endl;
 
         // make the deposit or withradrawal
         if (depositOrWithdrawal == 'D')
         {
             // make the deposit
-            result[i] = "Deposit of " + to_string(amount) + " made.";
+            result[i] = "Deposit of " + dollar(amount) + " made.";
             account->deposit(amount);
         }
         else if (depositOrWithdrawal == 'W')
@@ -54,14 +83,13 @@ string *doDepositsAndWithdrawals(Account *account,
             // make a withdrawal
             if (account->withdraw(amount))
             {
-                result[i] = "Withdrawal of $" + to_string(amount) 
+                result[i] = "Withdrawal of " + dollar(amount) 
                     + " made.";
             }
             else
             {
-                result[i] = "Withdrawal of $" + to_string(amount) 
-                    + " failed." 
-                    + " Service Charge of $15 charged to the account.";
+                result[i] = "Withdrawal of " + dollar(amount) 
+                    + " failed.";
             }
         }
         else
@@ -80,14 +108,37 @@ string *doDepositsAndWithdrawals(Account *account,
 //***********************************************************
 Account *getInput()
 {
-    cout << "Please choose your account type (C = Checking, S = Savings): ";
-    char accountType;
+   // get the user input and error check
+   cout << "Please choose your account type (S = Savings, C = Checking): ";
+   char accountType = 'a';
+   while(accountType != 'S' && accountType != 'C')
+   {
+       cin >> accountType;
+
+       accountType = toupper(accountType);
+       if (accountType != 'S' && accountType != 'C')
+       {
+           cout << "Invalid account type. Please try again: ";
+       }
+   }
+
+   string accountTypeString;
+   if (accountType == 'S')
+   {
+       accountTypeString = "Savings";
+   }
+   else
+   {
+       accountTypeString = "Checking";
+   }
+
     double initBal, initInterestRate;
-    cin >> accountType;
     cout << endl;
-    cout << "Please input your account's beginning balance: ";
+    cout << "Please input your " << accountTypeString 
+      << " account's beginning balance: $";
     cin >> initBal;
-    cout << "Please input your account's annual interest rate percentage: ";
+    cout << "Please input your " << accountTypeString 
+      << " account's annual interest rate percentage: ";
     cin >> initInterestRate;
 
     Account *account; // the account to return
@@ -116,14 +167,14 @@ void printIntro()
 
     cout << "         _._._                       _._._\n";
     cout << "        _|   |_                     _|   |_\n";
-    cout << "        | ... |_._._._._._._._._._| ... |\n";
+    cout << "        | ... |_._._._._._._._._._._| ... |\n";
     cout << "        | ||| |  o LONGHORN BANK o  | ||| |\n";
     cout << "        | \"\"\" |  \"\"\"    \"\"\"    \"\"\"  | \"\"\" |\n";
     cout << "   ())  |[-|-]| [-|-]  [-|-]  [-|-] |[-|-]|  ())\n";
     cout << "  (())) |     |---------------------|     | (()))\n";
     cout << " (())())| \"\"\" |  \"\"\"   " 
         << " \"\"\"    \"\"\"  | \"\"\" |(())())\n";
-    cout << " (()))()|[-|-]|  :::   .\"-.   :::  |[-|-]|(()))())\n";
+    cout << " (()))()|[-|-]|  :::   .-\"-.   :::  |[-|-]|(()))())\n";
     cout << " ()))(()|     | |~|~|  |_|_|  |~|~| |     |()))(()\n";
     cout << "    ||  |_____|_|_|_|__|_|_|__|_|_|_|_____|  ||\n";
     cout << " ~ ~^^ @@@@@@@@@@@@@@/=======\\@@@@@@@@@@@@@@ ^^~ ~\n";
@@ -144,18 +195,20 @@ void printCow()
     // print ascii art cow, credit to 
     //https://www.angelfire.com/oh/cow123/ascii.html
 
-    cout << "                   " 
+    cout << "  " 
         << "____                                         ____\n";
-    cout << "                      " 
-        << "/                                         \n";
-    cout << "                      " 
+    cout << "     " 
+        << "/                                         \\\n";
+    cout << "     " 
         << "(__________________________________________)\n";
-    cout << "                                          (oo)\n";
-    cout << "                                   /-------\\/          \n";
-    cout << "                                  / |     ||          \n";
-    cout << "                                 *  ||----||            \n";
-    cout << "                                   " 
+    cout << "                         (oo)\n";
+    cout << "                  /-------\\/          \n";
+    cout << "                 / |     ||          \n";
+    cout << "                *  ||----||            \n";
+    cout << "                  " 
         << " ~~    ~~                 \n";
+    cout << endl;
+    cout << "                Have a nice day!" << endl;
     cout << endl;
 }
 
@@ -168,22 +221,22 @@ void printLogo()
     // print ascii longhorn logo, credit to 
     // https://ascii.co.uk/art/longhorn
 
-    cout << "        888                        888" << endl;
-    cout << "        888                        888" << endl;
-    cout << "        888                        888" << endl;
-    cout << "        888 .d88b. 88888b.  .d88b. 88888b. " 
+    cout << "888                        888" << endl;
+    cout << "888                        888" << endl;
+    cout << "888                        888" << endl;
+    cout << "888 .d88b. 88888b.  .d88b. 88888b. " 
         << " .d88b. 888d88888888b." << endl;
-    cout << "        888d88\"\"88b888 \"88bd88P\"88b888 " 
+    cout << "888d88\"\"88b888 \"88bd88P\"88b888 " 
         << "\"88bd88\"\"88b888P\"  888 \"88b" << endl;
-    cout << "        888888  888888  888888  888888 "
+    cout << "888888  888888  888888  888888 "
         << " 888888  888888    888  888" << endl;
-    cout << "        888Y88..88P888  888Y88b 888888 " 
+    cout << "888Y88..88P888  888Y88b 888888 " 
         << " 888Y88..88P888    888  888" << endl;
-    cout << "        888 \"Y88P\" 888  888 \"Y88888888 " 
+    cout << "888 \"Y88P\" 888  888 \"Y88888888 " 
         << " 888 \"Y88P\" 888    888  888 " << endl;
-    cout << "                                   888" << endl;
-    cout << "                              Y8b d88P" << endl;
-    cout << "                              \"Y88P\"" << endl;
+    cout << "                           888" << endl;
+    cout << "                      Y8b d88P" << endl;
+    cout << "                       \"Y88P\"" << endl;
     cout << endl;
 }
 
@@ -209,27 +262,31 @@ int getLongest(int *nums, int numsSize)
     return longest;
 }
 
+
 //***********************************************************
 // printOutput: method that prints the output of the program
 // transactionLog: an array of transaction strings
 // numTransactions: the size of the array
 // beginningBalance: the beginning balance of the account
-// numDeposits: the number of deposits made
-// numWithdrawals: the number of withdrawals made
+// amountDeposited: the amount of deposits made
+// amountWithdrawn: the amount of withdrawals made
 // monthlyInterestEarned: earned interest this month
 // serviceCharges: service charges amount
 // endingBalance: the ending balance of the account
 // returns: nothing
 //***********************************************************
 void printOutput(string *transactionLog, int numTransactions, 
-    double beginningBalance, double numDeposits, double numWithdrawals, 
+    double beginningBalance, double amountDeposited, double amountWithdrawn, 
     double monthlyInterestEarned, double serviceCharges,
     double endingBalance)
 {
+      // bank logo
+      printLogo();
 
     // Prints the contents of the transaction log
 
     cout << "Transaction Log: " << endl;
+    cout << "-----------------------------------------------------" << endl;
 
     // if there are no transactions, tell the user
     if (numTransactions == 0)
@@ -248,31 +305,37 @@ void printOutput(string *transactionLog, int numTransactions,
     }
     cout << endl;
 
+      
 
-
-    cout << "_._.__._.__._.__._.__._.__._.__._.__._.__._.__._._" << endl;
-    cout << "| Monthly Starting Balance: " << beginningBalance << endl;
-    cout << "-.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.-" << endl;
+    cout << "_____________________________________________________" << endl;
+    cout << "| Monthly Starting Balance: " << setw(24) << right 
+      << dollar(beginningBalance) << "|" << endl;
+    cout << "-----------------------------------------------------" << endl;
     cout << endl;
-    cout << "_._.__._.__._.__._.__._.__._.__._.__._.__._.__._._" << endl;
-    cout << "| Amount Deposited:         " << numDeposits << endl;
-    cout << "-.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.-" << endl;
+    cout << "_____________________________________________________" << endl;
+    cout << "| Amount Deposited:         " << setw(24) << right 
+      << dollar(amountDeposited) << "|" << endl;
+    cout << "-----------------------------------------------------" << endl;
     cout << endl;
-    cout << "_._.__._.__._.__._.__._.__._.__._.__._.__._.__._._" << endl;
-    cout << "| Amount Withdrawn:         " << numWithdrawals << endl;
-    cout << "-.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.-" << endl;
+    cout << "_____________________________________________________" << endl;
+    cout << "| Amount Withdrawn:         " << setw(24) << right 
+      << dollar(amountWithdrawn) << "|" << endl;
+    cout << "-----------------------------------------------------" << endl;
     cout << endl;
-    cout << "_._.__._.__._.__._.__._.__._.__._.__._.__._.__._._" << endl;
-    cout << "| Interest Earned:          " << monthlyInterestEarned << endl;
-    cout << "-.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.-" << endl;
+    cout << "_____________________________________________________" << endl;
+    cout << "| Interest Earned:          " << setw(24) << right 
+      << dollar(monthlyInterestEarned) << "|" << endl;
+    cout << "-----------------------------------------------------" << endl;
     cout << endl;
-    cout << "_._.__._.__._.__._.__._.__._.__._.__._.__._.__._._" << endl;
-    cout << "| Service Charges:          " << serviceCharges << endl;
-    cout << "-.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.-" << endl;
+    cout << "_____________________________________________________" << endl;
+    cout << "| Service Charges:          " << setw(24) << right 
+      << dollar(serviceCharges) << "|" << endl;
+    cout << "-----------------------------------------------------" << endl;
     cout << endl;
-    cout << "_._.__._.__._.__._.__._.__._.__._.__._.__._.__._._" << endl;
-    cout << "| Monthly Ending Balance:   " << endingBalance << endl;
-    cout << "-.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.--.-.-" << endl;
+    cout << "_____________________________________________________" << endl;
+    cout << "| Monthly Ending Balance:   " << setw(24) << right 
+      << dollar(endingBalance) << "|" << endl;
+    cout << "-----------------------------------------------------" << endl;
     cout << endl;
 }
 
@@ -302,5 +365,6 @@ int main(int argc, char const *argv[])
                 account->balance);
     delete account;
     delete[] transactionLog;
+    printCow();
     return 0;
 }
